@@ -35,6 +35,7 @@ A lightweight, user‑mode wrapper around Finicky that lets you manage browser r
  - `rules.sample.json`: Sample `rules.json` reflecting the initial presets
  - `ui_options.md`: UI coverage mapping for all Finicky v4 options
  - `discovery_targets.md`: Bundle IDs and profile paths to parse
+ - `.github/workflows/validate-rules.yml`: CI to validate sample rules against the schema
 
 Example config reference:
 - `.finicky_example.js:1`
@@ -57,6 +58,7 @@ Example config reference:
 ## Contributing
 - Start with `planning.md` and `backlog.json`
 - Keep changes minimal and focused; prefer incremental PRs per milestone
+ - CI validates `rules.sample.json` against `rules.schema.json` on every push/PR
 
 ## License
 - TBD

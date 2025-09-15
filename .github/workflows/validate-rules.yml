@@ -1,0 +1,26 @@
+name: Validate Rules Schema
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install ajv-cli
+        run: npm install -g ajv-cli
+
+      - name: Validate rules.sample.json against rules.schema.json
+        run: ajv validate -s rules.schema.json -d rules.sample.json --strict=false
+

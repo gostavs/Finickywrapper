@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Node/Build artifacts
+node_modules/
+dist/
+build/
+*.log
+
+# Editors/IDEs
+.idea/
+.vscode/
+*.swp
+
+# Archives/Packages
+*.zip
+*.tar
+*.gz
+*.dmg
+*.pkg
+
+# Temp/Backups
+*.tmp
+*.bak
+tmp/
+
+# Local fetches
+finicky_v4_config.html
+
+# Env
+.env

@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "generatedBy": "author",
+    "generatedAt": "2025-09-15T00:00:00Z"
+  },
+  "options": {
+    "logRequests": false,
+    "checkForUpdates": true
+  },
+  "rewrite": [
+    {
+      "name": "Example rewrite",
+      "match": { "globs": ["example.org/*"] },
+      "url": "https://example.com"
+    }
+  ],
+  "default": {
+    "type": "browser",
+    "name": "Microsoft Edge",
+    "profile": "Default"
+  },
+  "rules": [
+    {
+      "id": "rule-microsoft-admin",
+      "name": "Microsoft admin portals → Edge Profile 3",
+      "enabled": true,
+      "order": 10,
+      "managed": false,
+      "match": {
+        "globs": [
+          "portal.azure.com/*",
+          "entra.microsoft.com/*",
+          "intune.microsoft.com/*",
+          "endpoint.microsoft.com/*",
+          "security.microsoft.com/*"
+        ]
+      },
+      "action": {
+        "destination": { "type": "browser", "name": "Microsoft Edge", "profile": "Profile 3" },
+        "rewrites": { "msPromptSelectAccount": true }
+      }
+    },
+    {
+      "id": "rule-work-general",
+      "name": "NAV + cloud.microsoft.com → Edge Default",
+      "enabled": true,
+      "order": 20,
+      "managed": false,
+      "match": {
+        "globs": [
+          "navno.*.com/*",
+          "navno.*.no/*",
+          "*minwintid*",
+          "*.cloud.microsoft.com/*"
+        ]
+      },
+      "action": {
+        "destination": { "type": "browser", "name": "Microsoft Edge", "profile": "Default" }
+      }
+    },
+    {
+      "id": "rule-youtube",
+      "name": "YouTube → Brave",
+      "enabled": true,
+      "order": 30,
+      "managed": false,
+      "match": {
+        "globs": ["*.youtube.com/*", "youtu.be/*", "*.music.youtube.com/*"]
+      },
+      "action": {
+        "destination": { "type": "browser", "name": "Brave Browser" }
+      }
+    },
+    {
+      "id": "rule-spotify",
+      "name": "Spotify → Spotify app",
+      "enabled": true,
+      "order": 40,
+      "managed": false,
+      "match": {
+        "regexps": ["^https?://(open\\.spotify\\.com|spotify\\.link)/"]
+      },
+      "action": {
+        "destination": { "type": "app", "bundleId": "com.spotify.client" },
+        "rewrites": { "spotifyDeepLink": true }
+      }
+    },
+    {
+      "id": "rule-slack",
+      "name": "Slack → Slack app",
+      "enabled": true,
+      "order": 50,
+      "managed": false,
+      "match": {
+        "globs": ["*.slack.com/*", "slack.com/*", "slack-redir.net/*"]
+      },
+      "action": {
+        "destination": { "type": "app", "bundleId": "com.tinyspeck.slackmacgap" }
+      }
+    },
+    {
+      "id": "rule-teams-meeting",
+      "name": "Teams meetings → Teams app",
+      "enabled": true,
+      "order": 60,
+      "managed": false,
+      "match": {
+        "regexps": ["teams\\.microsoft\\.com/(.*meetup-join|l/)"]
+      },
+      "action": {
+        "destination": { "type": "app", "bundleId": "com.microsoft.teams2" },
+        "rewrites": { "teamsDeepLink": true }
+      }
+    },
+    {
+      "id": "rule-apple",
+      "name": "Apple dev/business → Safari",
+      "enabled": true,
+      "order": 70,
+      "managed": false,
+      "match": {
+        "globs": [
+          "business.apple.com/*",
+          "developer.apple.com/*",
+          "appstoreconnect.apple.com/*",
+          "idmsa.apple.com/*"
+        ]
+      },
+      "action": {
+        "destination": { "type": "browser", "name": "Safari" }
+      }
+    }
+  ]
+}

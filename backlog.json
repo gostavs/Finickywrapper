@@ -1,0 +1,278 @@
+[
+  {
+    "id": "EPIC-01",
+    "title": "Schema, Presets, and Baseline",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["epic"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-001",
+    "title": "Define rules.json schema (v1)",
+    "description": "Specify top-level fields, rule shape, rewrites, and metadata with versioning and precedence flags.",
+    "status": "done",
+    "priority": "high",
+    "labels": ["schema", "design"],
+    "dependsOn": ["EPIC-01"],
+    "estimate": 1
+  },
+  {
+    "id": "TASK-002",
+    "title": "Document presets from .finicky_example.js",
+    "description": "Transcribe YouTube/Spotify/Slack/Teams/Apple/Microsoft rules into initial preset definitions.",
+    "status": "done",
+    "priority": "high",
+    "labels": ["presets", "design"],
+    "dependsOn": ["EPIC-01"],
+    "estimate": 1
+  },
+  {
+    "id": "TASK-003",
+    "title": "List bundle IDs and profile paths",
+    "description": "Document browser bundle IDs, native app bundle IDs, and Chromium Local State paths.",
+    "status": "done",
+    "priority": "medium",
+    "labels": ["discovery", "docs"],
+    "dependsOn": ["EPIC-01"],
+    "estimate": 0.5
+  },
+  {
+    "id": "EPIC-02",
+    "title": "Discovery Layer",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["epic"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-010",
+    "title": "Discover installed browsers and bundle IDs",
+    "description": "Scan /Applications and ~/Applications for Chrome/Edge/Brave/Safari (optional Arc/Orion/Firefox).",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["discovery"],
+    "dependsOn": ["EPIC-02"],
+    "estimate": 1
+  },
+  {
+    "id": "TASK-011",
+    "title": "Parse Chromium profiles (Local State)",
+    "description": "Extract directory labels and display names for Chrome/Edge/Brave; cache and refresh on Save.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["discovery", "chromium"],
+    "dependsOn": ["EPIC-02"],
+    "estimate": 2
+  },
+  {
+    "id": "TASK-012",
+    "title": "Detect native app presence",
+    "description": "Probe Slack, Spotify, Teams (New/Classic), Zoom bundle IDs for handoff targets.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["discovery", "native-apps"],
+    "dependsOn": ["EPIC-02"],
+    "estimate": 1
+  },
+  {
+    "id": "EPIC-03",
+    "title": "Generator",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["epic"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-020",
+    "title": "Implement rewrite phase",
+    "description": "Force HTTPS, strip tracking params (allow/block lists), Teams/Spotify/Office deep links.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["generator", "rewrites"],
+    "dependsOn": ["EPIC-03", "TASK-001"],
+    "estimate": 2
+  },
+  {
+    "id": "TASK-021",
+    "title": "Implement handler phase",
+    "description": "Choose destination browser object or native app bundle ID based on matches.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["generator", "handlers"],
+    "dependsOn": ["EPIC-03", "TASK-020"],
+    "estimate": 2
+  },
+  {
+    "id": "TASK-022",
+    "title": "Template .finicky.js output with notify",
+    "description": "Render config file, include finicky.notify on load, and map presets to handlers.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["generator", "template"],
+    "dependsOn": ["TASK-021"],
+    "estimate": 1
+  },
+  {
+    "id": "EPIC-04",
+    "title": "Save, Validate, Rollback",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["epic"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-030",
+    "title": "Atomic write and backups",
+    "description": "Write to temp, fsync, move to ~/.finicky.js; keep rotating backups.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["io", "safety"],
+    "dependsOn": ["EPIC-04"],
+    "estimate": 1
+  },
+  {
+    "id": "TASK-031",
+    "title": "Trigger Finicky reload",
+    "description": "Use open -a Finicky to reload configuration after write.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["integration"],
+    "dependsOn": ["TASK-030"],
+    "estimate": 0.5
+  },
+  {
+    "id": "TASK-032",
+    "title": "Validate via unified log",
+    "description": "Wait for success signal in net.kampe.finicky; parse errors as fallback.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["validation", "logging"],
+    "dependsOn": ["TASK-031"],
+    "estimate": 1.5
+  },
+  {
+    "id": "TASK-033",
+    "title": "Rollback and safety mode",
+    "description": "Restore previous backup on failure; block writes after repeated failures.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["safety"],
+    "dependsOn": ["TASK-032"],
+    "estimate": 1
+  },
+  {
+    "id": "EPIC-05",
+    "title": "Test Flow",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["epic"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-040",
+    "title": "Implement real-world test launcher",
+    "description": "Open URL via selected source app and show recent decision from logs.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["testing"],
+    "dependsOn": ["EPIC-05", "TASK-032"],
+    "estimate": 1
+  },
+  {
+    "id": "EPIC-06",
+    "title": "UI (SwiftDialog)",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["epic", "ui"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-053",
+    "title": "UI coverage for Finicky v4 options",
+    "description": "Add UI inputs for general options, global rewrites, advanced match/browser/url functions, appType, and openInBackground.",
+    "status": "todo",
+    "priority": "high",
+    "labels": ["ui", "spec"],
+    "dependsOn": ["EPIC-06", "TASK-001"],
+    "estimate": 2
+  },
+  {
+    "id": "TASK-054",
+    "title": "Document UI mapping (v4 options)",
+    "description": "Create ui_options.md to map every Finicky v4 config capability to UI fields.",
+    "status": "done",
+    "priority": "medium",
+    "labels": ["docs", "ui"],
+    "dependsOn": ["EPIC-06"],
+    "estimate": 0.5
+  },
+  {
+    "id": "TASK-050",
+    "title": "Home view: list and reorder",
+    "description": "Render rules, enable/disable, drag reorder; respect managed locks.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["ui"],
+    "dependsOn": ["EPIC-06", "TASK-001"],
+    "estimate": 2
+  },
+  {
+    "id": "TASK-051",
+    "title": "Add rule wizard",
+    "description": "Match types, destination picker (browser+profile/native), optional rewrites.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["ui"],
+    "dependsOn": ["TASK-050", "TASK-011", "TASK-012"],
+    "estimate": 3
+  },
+  {
+    "id": "TASK-052",
+    "title": "Test panel integration",
+    "description": "URL input + source app selector + Open via Finicky.",
+    "status": "todo",
+    "priority": "low",
+    "labels": ["ui", "testing"],
+    "dependsOn": ["TASK-040"],
+    "estimate": 1
+  },
+  {
+    "id": "EPIC-07",
+    "title": "Packaging and Deployment",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["epic", "packaging"],
+    "estimate": 0
+  },
+  {
+    "id": "TASK-060",
+    "title": "Build pkg (user context)",
+    "description": "Package SwiftDialog + wrapper; ensure user-level writes and open commands.",
+    "status": "todo",
+    "priority": "medium",
+    "labels": ["packaging"],
+    "dependsOn": ["EPIC-07"],
+    "estimate": 2
+  },
+  {
+    "id": "TASK-061",
+    "title": "Managed defaults seeding",
+    "description": "Ship managed.json and seed first-run; mark managed rules as locked.",
+    "status": "todo",
+    "priority": "low",
+    "labels": ["deployment"],
+    "dependsOn": ["TASK-001", "TASK-002"],
+    "estimate": 1
+  },
+  {
+    "id": "TASK-062",
+    "title": "Uninstall/restore flow",
+    "description": "Restore last non-wrapper .finicky.js; remove state files.",
+    "status": "todo",
+    "priority": "low",
+    "labels": ["packaging", "safety"],
+    "dependsOn": ["TASK-030"],
+    "estimate": 1
+  }
+]

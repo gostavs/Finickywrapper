@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/finickywrapper/rules.schema.json",
+  "title": "FinickyWrapper Rules Schema",
+  "description": "Schema for per-user routing rules that generate ~/.finicky.js",
+  "type": "object",
+  "required": ["schemaVersion", "default", "rules"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "enum": [1] },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "logRequests": { "type": "boolean" },
+        "checkForUpdates": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "default": {
+      "type": "object",
+      "description": "Default destination when no rule matches",
+      "oneOf": [
+        {
+          "title": "Browser",
+          "type": "object",
+          "required": ["type", "name"],
+          "properties": {
+            "type": { "const": "browser" },
+            "name": { "type": "string" },
+            "profile": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "title": "Native App (bundle id)",
+          "type": "object",
+          "required": ["type", "bundleId"],
+          "properties": {
+            "type": { "const": "app" },
+            "bundleId": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "rewrite": {
+      "type": "array",
+      "description": "Global rewrite rules applied before handlers.",
+      "items": { "$ref": "#/$defs/rewriteRule" }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "rewriteRule": {
+      "type": "object",
+      "required": ["match"],
+      "properties": {
+        "name": { "type": "string" },
+        "match": { "$ref": "#/$defs/match" },
+        "url": {
+          "description": "Target URL after rewrite. Use string or URL string. For advanced usage provide urlFunction.",
+          "type": ["string"],
+          "nullable": true
+        },
+        "urlFunction": {
+          "type": "string",
+          "description": "Advanced: JavaScript function body taking (url, options) and returning URL|string."
+        }
+      },
+      "additionalProperties": false
+    },
+    "rule": {
+      "type": "object",
+      "required": ["id", "name", "enabled", "order", "match", "action"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "enabled": { "type": "boolean" },
+        "order": { "type": "integer", "minimum": 0 },
+        "managed": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "match": { "$ref": "#/$defs/match" },
+        "action": { "$ref": "#/$defs/action" }
+      },
+      "additionalProperties": false
+    },
+    "match": {
+      "type": "object",
+      "description": "Conditions to match; ALL conditions in arrays are OR’d within the field, across fields are AND’d.",
+      "properties": {
+        "globs": {
+          "type": "array",
+          "description": "Finicky-style glob patterns like *.youtube.com/* or youtu.be/*",
+          "items": { "type": "string" }
+        },
+        "regexps": {
+          "type": "array",
+          "description": "Regular expressions as JS strings; generator compiles with 'i' unless specified inline",
+          "items": { "type": "string" }
+        },
+        "urlContains": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "domains": {
+          "type": "array",
+          "description": "Domain names without scheme; matches any path.",
+          "items": { "type": "string" }
+        },
+        "fileExtensions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "sourceApps": {
+          "type": "array",
+          "description": "Restrict matches to specific source bundle IDs (e.g., com.microsoft.VSCode)",
+          "items": { "type": "string" }
+        },
+        "function": {
+          "type": "string",
+          "description": "Advanced: JavaScript function body taking (url, options) and returning boolean."
+        }
+      },
+      "additionalProperties": false
+    },
+    "action": {
+      "type": "object",
+      "required": ["destination"],
+      "properties": {
+        "destination": {
+          "oneOf": [
+            {
+              "title": "Browser",
+              "type": "object",
+              "required": ["type", "name"],
+              "properties": {
+                "type": { "const": "browser" },
+                "name": { "type": "string" },
+                "profile": { "type": "string" },
+                "appType": { "type": "string", "enum": ["appName", "bundleId", "appPath"] },
+                "openInBackground": { "type": "boolean" }
+              },
+              "additionalProperties": false
+            },
+            {
+              "title": "Native App (bundle id)",
+              "type": "object",
+              "required": ["type", "bundleId"],
+              "properties": {
+                "type": { "const": "app" },
+                "bundleId": { "type": "string" }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "dynamicDestination": {
+          "type": "string",
+          "description": "Advanced: JavaScript function body taking (url, options) and returning a browser name|string or { name, profile, openInBackground }."
+        },
+        "rewrites": {
+          "type": "object",
+          "properties": {
+            "forceHttps": { "type": "boolean" },
+            "stripTracking": {
+              "oneOf": [
+                { "type": "boolean" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "allow": { "type": "array", "items": { "type": "string" } },
+                    "block": { "type": "array", "items": { "type": "string" } }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "msPromptSelectAccount": { "type": "boolean" },
+            "spotifyDeepLink": { "type": "boolean" },
+            "teamsDeepLink": { "type": "boolean" },
+            "officeDeepLink": { "type": "boolean" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
